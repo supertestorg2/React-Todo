@@ -4,6 +4,7 @@ import TodoList from './components/TodoList';
 import TodoForm from './components/TodoForm';
 
 const App = () => {
+  const TODOS_KEY = 'todos';
   const [todos, setTodos] = useState([]);
   const [current, setCurrent] = useState('');
   const [query, setQuery] = useState('');
@@ -11,14 +12,15 @@ const App = () => {
   // ============== Lifecycle Effects ==============
 
   useEffect(() => {
-    localStorage.getItem('todos') && setTodos(
-      JSON.parse(localStorage.getItem('todos'))
+    localStorage.getItem(TODOS_KEY) && setTodos(
+      JSON.parse(localStorage.getItem(TODOS_KEY))
     );
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('todos', JSON.stringify(todos));
+    localStorage.setItem(TODOS_KEY, JSON.stringify(todos));
   }, [todos]);
+
 
   // ============== Event Handlers ==============
 
@@ -44,13 +46,15 @@ const App = () => {
 
   const addTodo = e => {
     e.preventDefault(); // stop submit/reload
-    setTodos(todos.concat([{ // add current todo (from input) to todos
+    // add current todo (from input) to todos
+    setTodos(todos.concat([{
         task: current,
         id: Date.now(),
         completed: false
       }])
     );
     if (current.length > 30) alert('Your task is too long!');
+    else setCurrent('');
   };
 
   const clearTodo = e => {
@@ -62,6 +66,7 @@ const App = () => {
     e.preventDefault();
     setTodos([]);
   };
+
 
   let filteredTodos = todos.filter(
     todo => {
@@ -83,6 +88,7 @@ const App = () => {
         onClear={clearTodo} 
         onClearAll={clearAll}
         onSearch={handleSearchChange}
+        addValue={current}
       />
     </div>
   );

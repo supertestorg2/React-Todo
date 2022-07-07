@@ -1,14 +1,14 @@
 import React from 'react';
 import Todo from './Todo';
 
-const TodoList = props => {
+const TodoList = ({todos, onItemClick}) => {
     return (
         <div>
             <div className="titleHolder">Retro Todo List</div>
             <div className="todo-items">
-                {props.todoArr.map(item => {
+                {todos.map(item => {
                     return (
-                        <Todo key={item.id} unique={item.id} name={item.task} onClick={props.onItemClick} />
+                        <Todo key={item.id} unique={item.id} name={item.task} onClick={onItemClick} />
                     );
                 })}
             </div>
